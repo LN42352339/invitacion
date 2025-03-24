@@ -1,154 +1,167 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <title>Invitación Especial</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/png" href="assets/page1.jpg" />
-  <script src="assets/jquery.min.js"></script>
-  <script src="assets/turn.min.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invitación Especial</title>
+    <link rel="icon" href="assets/page1.jpg" />
+    <script src="assets/jquery.min.js"></script>
+    <script src="assets/turn.min.js"></script>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-    html, body {
-      height: 100%;
-      background: #eee;
-      font-family: sans-serif;
-      overflow: hidden;
-    }
+      body {
+        background: linear-gradient(to right, #f5f5f5, #ddd);
+        font-family: "Arial", sans-serif;
+        height: 100vh;
+        overflow: hidden;
+      }
 
-    #flipbook {
-      width: 100vw;
-      height: 100vh;
-      margin: auto;
-    }
+      #flipbook {
+        width: 100%;
+        max-width: 1000px;
+        height: 100vh;
+        margin: auto;
+      }
 
-    #flipbook .page {
-      width: 100%;
-      height: 100%;
-    }
+      #flipbook .page {
+        width: 100%;
+        height: 100vh;
+      }
 
-    #flipbook .page img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+      #flipbook .page img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
 
-    audio {
-      display: none;
-    }
+      audio {
+        display: none;
+      }
 
-    #start-button {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      border: none;
-      background: transparent;
-      z-index: 3000;
-      cursor: pointer;
-    }
+      #start-button {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: transparent;
+        border: none;
+        z-index: 1000;
+        cursor: pointer;
+      }
 
-    #prevPage, #nextPage {
-      position: fixed;
-      top: 50%;
-      transform: translateY(-50%);
-      background-color: rgba(0, 0, 0, 0.4);
-      border: none;
-      color: white;
-      font-size: 24px;
-      padding: 10px 15px;
-      cursor: pointer;
-      z-index: 2000;
-      border-radius: 10px;
-    }
+      #restart-button {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 15px;
+        background: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        z-index: 1000;
+      }
 
-    #prevPage {
-      left: 10px;
-    }
+      .last-page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        background: #fff;
+        height: 100%;
+        padding: 20px;
+        text-align: center;
+      }
 
-    #nextPage {
-      right: 10px;
-    }
+      @media (max-width: 768px) {
+        #flipbook {
+          width: 100vw !important;
+          height: 100vh !important;
+        }
 
-    .last-page {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #fff;
-      text-align: center;
-      padding: 20px;
-      font-size: 24px;
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
+        #flipbook .page {
+          height: 100vh !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Música de fondo -->
+    <audio id="bg-music" loop>
+      <source src="assets/audio.mp3" type="audio/mpeg" />
+      Tu navegador no soporta audio.
+    </audio>
 
-  <!-- Música -->
-  <audio id="bg-music" loop>
-    <source src="assets/audio.mp3" type="audio/mpeg" />
-    Tu navegador no soporta audio HTML5.
-  </audio>
+    <!-- Botón invisible para iniciar música -->
+    <button id="start-button"></button>
 
-  <!-- Botón invisible para iniciar -->
-  <button id="start-button" aria-label="Toca para iniciar la invitación"></button>
+    <!-- Botón para reiniciar -->
+    <button id="restart-button">🔁 Repetir</button>
 
-  <!-- Botones de navegación -->
-  <button id="prevPage">⬅</button>
-  <button id="nextPage">➡</button>
+    <!-- Libro -->
+    <div id="flipbook">
+      <div class="page"><img src="assets/page1.jpg" alt="Página 1" /></div>
+      <div class="page"><img src="assets/page2.jpg" alt="Página 2" /></div>
+      <div class="page"><img src="assets/page3.jpg" alt="Página 3" /></div>
+      <div class="page"><img src="assets/page4.jpg" alt="Página 4" /></div>
+      <div class="page last-page">
+        🎉 ¡Gracias por acompañarnos!<br />Haz clic para volver a comenzar.
+      </div>
+    </div>
 
-  <!-- Flipbook -->
-  <div id="flipbook">
-    <div class="page"><img src="assets/page1.jpg" alt="Página 1" /></div>
-    <div class="page"><img src="assets/page2.jpg" alt="Página 2" /></div>
-    <div class="page"><img src="assets/page3.jpg" alt="Página 3" /></div>
-    <div class="page"><img src="assets/page4.jpg" alt="Página 4" /></div>
-    <div class="page last-page">🎉 ¡Gracias por tu atención!<br>Vuelve al inicio si deseas verla de nuevo.</div>
-  </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const flipbook = $("#flipbook");
+        const music = document.getElementById("bg-music");
+        const startBtn = document.getElementById("start-button");
+        const restartBtn = document.getElementById("restart-button");
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const isMobile = window.innerWidth <= 768;
-
-      $('#flipbook').turn({
-        width: window.innerWidth,
-        height: window.innerHeight,
-        autoCenter: true,
-        display: isMobile ? 'single' : 'double',
-        acceleration: true,
-        elevation: 50,
-        gradients: true
-      });
-
-      const music = document.getElementById("bg-music");
-      const startBtn = document.getElementById("start-button");
-
-      const playMusic = () => {
-        music.play().then(() => {
-          startBtn.style.display = "none";
-        }).catch((error) => {
-          console.log("Error al reproducir música:", error);
+        flipbook.turn({
+          width: flipbook.width(),
+          height: flipbook.height(),
+          autoCenter: true,
+          acceleration: true,
+          elevation: 50,
+          gradients: true,
+          when: {
+            turned: function (e, page) {
+              const total = flipbook.turn("pages");
+              restartBtn.style.display = page === total ? "block" : "none";
+            },
+          },
         });
-      };
 
-      startBtn.addEventListener("click", playMusic);
-      startBtn.addEventListener("touchstart", playMusic);
+        startBtn.addEventListener("click", () => {
+          music
+            .play()
+            .then(() => {
+              startBtn.style.display = "none";
+            })
+            .catch((err) => console.log("Error al reproducir música", err));
+        });
 
-      document.getElementById("nextPage").addEventListener("click", () => {
-        $("#flipbook").turn("next");
+        startBtn.addEventListener("touchstart", () => {
+          music
+            .play()
+            .then(() => {
+              startBtn.style.display = "none";
+            })
+            .catch((err) => console.log("Error al reproducir música", err));
+        });
+
+        restartBtn.addEventListener("click", () => {
+          flipbook.turn("page", 1);
+        });
       });
-
-      document.getElementById("prevPage").addEventListener("click", () => {
-        $("#flipbook").turn("previous");
-      });
-    });
-  </script>
-</body>
+    </script>
+  </body>
 </html>
