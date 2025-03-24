@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>Invitación Especial</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="assets/page1.jpg" />
   <script src="assets/jquery.min.js"></script>
   <script src="assets/turn.min.js"></script>
 
@@ -16,18 +17,15 @@
 
     html, body {
       height: 100%;
-      background: linear-gradient(to right, #f5f5f5, #ddd);
+      background: #eee;
       font-family: sans-serif;
       overflow: hidden;
     }
 
     #flipbook {
-      width: 90vw;
-      max-width: 800px;
-      height: 90vh;
-      max-height: 100vh;
+      width: 100vw;
+      height: 100vh;
       margin: auto;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
     }
 
     #flipbook .page {
@@ -53,24 +51,30 @@
       height: 100vh;
       border: none;
       background: transparent;
-      z-index: 2000;
+      z-index: 3000;
       cursor: pointer;
     }
 
-    #restart-button {
-      display: none;
+    #prevPage, #nextPage {
       position: fixed;
-      bottom: 30px;
-      right: 30px;
-      padding: 10px 20px;
-      background-color: #4caf50;
-      color: white;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0, 0, 0, 0.4);
       border: none;
-      border-radius: 10px;
-      font-size: 16px;
+      color: white;
+      font-size: 24px;
+      padding: 10px 15px;
       cursor: pointer;
-      z-index: 1500;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      z-index: 2000;
+      border-radius: 10px;
+    }
+
+    #prevPage {
+      left: 10px;
+    }
+
+    #nextPage {
+      right: 10px;
     }
 
     .last-page {
@@ -96,8 +100,9 @@
   <!-- Botón invisible para iniciar -->
   <button id="start-button" aria-label="Toca para iniciar la invitación"></button>
 
-  <!-- Botón para reiniciar -->
-  <button id="restart-button">🔁 Volver a comenzar</button>
+  <!-- Botones de navegación -->
+  <button id="prevPage">⬅</button>
+  <button id="nextPage">➡</button>
 
   <!-- Flipbook -->
   <div id="flipbook">
@@ -105,7 +110,7 @@
     <div class="page"><img src="assets/page2.jpg" alt="Página 2" /></div>
     <div class="page"><img src="assets/page3.jpg" alt="Página 3" /></div>
     <div class="page"><img src="assets/page4.jpg" alt="Página 4" /></div>
-    <div class="page last-page">🎉 ¡Gracias por tu atención!<br>Pulsa para volver al inicio.</div>
+    <div class="page last-page">🎉 ¡Gracias por tu atención!<br>Vuelve al inicio si deseas verla de nuevo.</div>
   </div>
 
   <script>
@@ -113,18 +118,17 @@
       const isMobile = window.innerWidth <= 768;
 
       $('#flipbook').turn({
-        width: isMobile ? window.innerWidth : 800,
-        height: isMobile ? window.innerHeight : 500,
+        width: window.innerWidth,
+        height: window.innerHeight,
         autoCenter: true,
+        display: isMobile ? 'single' : 'double',
         acceleration: true,
         elevation: 50,
-        gradients: true,
-        display: isMobile ? 'single' : 'double'
+        gradients: true
       });
 
       const music = document.getElementById("bg-music");
       const startBtn = document.getElementById("start-button");
-      const restartBtn = document.getElementById("restart-button");
 
       const playMusic = () => {
         music.play().then(() => {
@@ -137,17 +141,12 @@
       startBtn.addEventListener("click", playMusic);
       startBtn.addEventListener("touchstart", playMusic);
 
-      $('#flipbook').bind("turned", function (event, page, view) {
-        const totalPages = $('#flipbook').turn("pages");
-        if (page === totalPages) {
-          restartBtn.style.display = "block";
-        } else {
-          restartBtn.style.display = "none";
-        }
+      document.getElementById("nextPage").addEventListener("click", () => {
+        $("#flipbook").turn("next");
       });
 
-      restartBtn.addEventListener("click", () => {
-        $('#flipbook').turn("page", 1);
+      document.getElementById("prevPage").addEventListener("click", () => {
+        $("#flipbook").turn("previous");
       });
     });
   </script>
