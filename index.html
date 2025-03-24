@@ -1,158 +1,164 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <title>Invitación de Aniversario</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <!-- Librerías -->
-  <script src="assets/jquery.min.js"></script>
-  <script src="assets/turn.min.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Invitación de Aniversario</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <!-- Librerías -->
+    <script src="assets/jquery.min.js"></script>
+    <script src="assets/turn.min.js"></script>
 
-    body {
-      background: linear-gradient(to right, #f5f5f5, #ddd);
-      font-family: sans-serif;
-      overflow: hidden;
-    }
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-    #flipbook {
-      width: 90vw;
-      max-width: 800px;
-      height: 90vh;
-      max-height: 500px;
-      margin: 40px auto;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to right, #f5f5f5, #ddd);
+        font-family: sans-serif;
+        overflow: hidden;
+      }
 
-    #flipbook .page {
-      width: 100%;
-      height: 100%;
-    }
+      #flipbook {
+        width: 100vw;
+        height: 100vh;
+        margin: 0 auto;
+      }
 
-    #flipbook .page img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+      #flipbook .page {
+        width: 100vw;
+        height: 100vh;
+      }
 
-    audio {
-      display: none;
-    }
+      #flipbook .page img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Asegura que la imagen llene toda la página */
+      }
 
-    #start-button {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      border: none;
-      background: transparent;
-      z-index: 9999;
-      cursor: pointer;
-    }
+      audio {
+        display: none;
+      }
 
-    #restart-button {
-      display: none;
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      padding: 10px 20px;
-      background-color: #4caf50;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      cursor: pointer;
-      z-index: 9998;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-    }
+      #start-button {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        border: none;
+        background: transparent;
+        z-index: 2000;
+        cursor: pointer;
+      }
 
-    .last-page {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #fff;
-      text-align: center;
-      padding: 20px;
-      font-size: 24px;
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
+      #restart-button {
+        display: none;
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        z-index: 1500;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      }
 
-  <!-- Música de fondo -->
-  <audio id="bg-music" loop>
-    <source src="assets/audio.mp3" type="audio/mpeg" />
-    Tu navegador no soporta audio HTML5.
-  </audio>
+      .last-page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #fff;
+        text-align: center;
+        padding: 20px;
+        font-size: 24px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Música de fondo -->
+    <audio id="bg-music" loop>
+      <source src="assets/audio.mp3" type="audio/mpeg" />
+      Tu navegador no soporta audio HTML5.
+    </audio>
 
-  <!-- Botón invisible para iniciar -->
-  <button id="start-button" aria-label="Toca para iniciar la invitación"></button>
+    <!-- Botón invisible para iniciar -->
+    <button
+      id="start-button"
+      aria-label="Toca para iniciar la invitación"
+    ></button>
 
-  <!-- Botón para reiniciar -->
-  <button id="restart-button">🔁 Volver a comenzar</button>
+    <!-- Botón para reiniciar -->
+    <button id="restart-button">🔁 Volver a comenzar</button>
 
-  <!-- Libro interactivo -->
-  <div id="flipbook">
-    <div class="page"><img src="assets/page1.jpg" alt="Página 1" /></div>
-    <div class="page"><img src="assets/page2.jpg" alt="Página 2" /></div>
-    <div class="page"><img src="assets/page3.jpg" alt="Página 3" /></div>
-    <div class="page"><img src="assets/page4.jpg" alt="Página 4" /></div>
-    <div class="page last-page">🎉 ¡Gracias por tu atención!<br>Pulsa para volver a empezar.</div>
-  </div>
+    <!-- Libro interactivo -->
+    <div id="flipbook">
+      <div class="page"><img src="assets/page1.jpg" alt="Página 1" /></div>
+      <div class="page"><img src="assets/page2.jpg" alt="Página 2" /></div>
+      <div class="page"><img src="assets/page3.jpg" alt="Página 3" /></div>
+      <div class="page"><img src="assets/page4.jpg" alt="Página 4" /></div>
+      <div class="page last-page">
+        🎉 ¡Gracias por tu atención!<br />Pulsa para volver a empezar.
+      </div>
+    </div>
 
-  <!-- Script principal -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // Inicializar el libro
-      $('#flipbook').turn({
-        width: $('#flipbook').width(),
-        height: $('#flipbook').height(),
-        autoCenter: true,
-        acceleration: true,
-        elevation: 50,
-        gradients: true
-      });
-
-      const music = document.getElementById("bg-music");
-      const startBtn = document.getElementById("start-button");
-      const restartBtn = document.getElementById("restart-button");
-
-      const playMusic = () => {
-        music.play().then(() => {
-          startBtn.style.display = "none";
-        }).catch((error) => {
-          console.log("Error al reproducir música:", error);
+    <!-- Script principal -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Inicializar el libro
+        $("#flipbook").turn({
+          width: $("#flipbook").width(),
+          height: $("#flipbook").height(),
+          autoCenter: true,
+          acceleration: true,
+          elevation: 50,
+          gradients: true,
         });
-      };
 
-      startBtn.addEventListener("click", playMusic);
-      startBtn.addEventListener("touchstart", playMusic);
+        const music = document.getElementById("bg-music");
+        const startBtn = document.getElementById("start-button");
+        const restartBtn = document.getElementById("restart-button");
 
-      // Mostrar botón de reinicio en la última página
-      $('#flipbook').bind("turned", function(event, page, view) {
-        const totalPages = $('#flipbook').turn("pages");
-        if (page === totalPages) {
-          restartBtn.style.display = "block";
-        } else {
-          restartBtn.style.display = "none";
-        }
+        const playMusic = () => {
+          music
+            .play()
+            .then(() => {
+              startBtn.style.display = "none";
+            })
+            .catch((error) => {
+              console.log("Error al reproducir música:", error);
+            });
+        };
+
+        startBtn.addEventListener("click", playMusic);
+        startBtn.addEventListener("touchstart", playMusic);
+
+        // Mostrar botón de reinicio en la última página
+        $("#flipbook").bind("turned", function (event, page, view) {
+          const totalPages = $("#flipbook").turn("pages");
+          if (page === totalPages) {
+            restartBtn.style.display = "block";
+          } else {
+            restartBtn.style.display = "none";
+          }
+        });
+
+        // Reiniciar al principio
+        restartBtn.addEventListener("click", () => {
+          $("#flipbook").turn("page", 1);
+        });
       });
-
-      // Reiniciar al principio
-      restartBtn.addEventListener("click", () => {
-        $('#flipbook').turn("page", 1);
-      });
-    });
-  </script>
-
-</body>
+    </script>
+  </body>
 </html>
